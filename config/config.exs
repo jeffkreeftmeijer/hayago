@@ -12,7 +12,8 @@ config :hayago, HayagoWeb.Endpoint,
   url: [host: "localhost"],
   secret_key_base: "qIFgTGVPpu8QBRiqb0/yNrZxRu8/SlqabAl8Nl+XE4e+aPSts9OXp4K9SbfAnjXB",
   render_errors: [view: HayagoWeb.ErrorView, accepts: ~w(html json)],
-  pubsub: [name: Hayago.PubSub, adapter: Phoenix.PubSub.PG2]
+  pubsub: [name: Hayago.PubSub, adapter: Phoenix.PubSub.PG2],
+  live_view: [signing_salt: "iyLSikcywGUPaYmw2i6VF8nXdpnwu0/9"]
 
 # Configures Elixir's Logger
 config :logger, :console,

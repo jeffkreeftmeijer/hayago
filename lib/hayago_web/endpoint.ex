@@ -1,5 +1,6 @@
 defmodule HayagoWeb.Endpoint do
   use Phoenix.Endpoint, otp_app: :hayago
+  socket "/live", Phoenix.LiveView.Socket
 
   socket "/socket", HayagoWeb.UserSocket,
     websocket: true,
