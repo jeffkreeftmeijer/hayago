@@ -1,0 +1,89 @@
+body{
+  margin: auto;
+  max-width: 900px;
+  padding: 1em;
+}
+
+.board{
+  background: url(/images/grid.svg);
+  padding-bottom: 100%;
+  width: 100%;
+  margin: 1em 0;
+}
+
+button{
+ font-size: 13px;
+}
+
+.board button{
+  background: transparent;
+  border: 0;
+  display: block;
+  float: left;
+  margin: 0;
+  padding: 0 0 calc(100%/9) 0;
+  width: calc(100%/9);
+  position: relative;
+}
+
+.board button::after, .captures span{
+  border-radius: 50%;
+  border: 1px solid black;
+}
+
+.board button::after{
+  bottom: 5%;
+  left: 5%;
+  right: 5%;
+  top: 5%;
+  content: "";
+  position: absolute;
+  opacity: 0;
+}
+
+.board button:not([disabled]):hover::after{
+  opacity: 0.5;
+}
+
+.board button.black::after, .board button.white::after{
+  opacity: 1;
+}
+
+.black button:not([disabled]):hover::after, button.black::after, span.black{
+  background-color: black;
+}
+
+.white button:not([disabled]):hover::after, button.white::after, span.white{
+  background-color: white;
+}
+
+.board button[disabled] {
+  cursor: not-allowed;
+}
+
+.board button:focus{
+  outline: none;
+}
+
+.captures{
+  padding: 1em calc(100% / 18);
+  display: flex;
+}
+
+.captures div{
+  flex-basis: 50%;
+}
+
+.captures div:last-child {
+  text-align: right;
+}
+
+.captures span{
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+}
+
+.history{
+  text-align: center;
+}
