@@ -1,5 +1,5 @@
 <div class="board <%= @state.current %>">
-  <%= for _position <- @state.positions do %>
-    <button></button>
+  <%= for {value, index} <- Enum.with_index(@state.positions) do %>
+    <button phx-click="place" phx-value="<%= index %>" class="<%= value %>"></button>
   <% end %>
 </div>
