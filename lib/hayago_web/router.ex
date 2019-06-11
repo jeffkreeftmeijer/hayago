@@ -16,6 +16,8 @@ defmodule HayagoWeb.Router do
 
   scope "/", HayagoWeb do
     pipe_through :browser
+
+    live "/", GameLive
   end
 
   # Other scopes may use custom stacks.
