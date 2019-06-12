@@ -1,5 +1,9 @@
 <div class="board <%= @state.current %>">
   <%= for {value, index} <- Enum.with_index(@state.positions) do %>
-    <button phx-click="place" phx-value="<%= index %>" class="<%= value %>"></button>
+    <%= if Hayago.State.legal?(@state, index) do %>
+      <button phx-click="place" phx-value="<%= index %>" class="<%= value %>"></button>
+    <% else %>
+      <button class="<%= value %>" disabled="disabled"></button>
+    <% end %>
   <% end %>
 </div>

@@ -20,6 +20,13 @@ defmodule HayagoWeb.GameLiveTest do
 
   test "places a stone", %{view: view} do
     assert render_click(view, :place, "0") =~
-             ~s(<button phx-click="place" phx-value="0" class="black"></button>)
+             ~r(<div.*?>[^>]*?<button class="black" disabled="disabled"></button>)s
+  end
+
+  test "disables a position", %{view: view} do
+    render_click(view, :place, "1")
+
+    assert render_click(view, :place, "9") =~
+             ~r(<div.*?>[^>]*?<button class="black" disabled="disabled"></button>)s
   end
 end
