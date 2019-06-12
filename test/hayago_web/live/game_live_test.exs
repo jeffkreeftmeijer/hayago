@@ -29,4 +29,16 @@ defmodule HayagoWeb.GameLiveTest do
     assert render_click(view, :place, "9") =~
              ~r(<div.*?>[^>]*?<button class="black" disabled="disabled"></button>)s
   end
+
+  test "displays captured stones", %{view: view} do
+    render_click(view, :place, "0")
+    render_click(view, :place, "8")
+    render_click(view, :place, "17")
+    render_click(view, :place, "9")
+    render_click(view, :place, "7")
+    result = render_click(view, :place, "1")
+
+    assert result =~ ~r(<span class="black">)s
+    assert result =~ ~r(<span class="white">)s
+  end
 end

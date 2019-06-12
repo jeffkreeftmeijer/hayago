@@ -1,3 +1,16 @@
+<div class="captures">
+  <div>
+    <%= for _ <- 1..@state.captures.black, @state.captures.black > 0 do %>
+      <span class="black"></span>
+    <% end %>
+  </div>
+  <div>
+    <%= for _ <- 1..@state.captures.white, @state.captures.white > 0 do %>
+      <span class="white"></span>
+    <% end %>
+  </div>
+</div>
+
 <div class="board <%= @state.current %>">
   <%= for {value, index} <- Enum.with_index(@state.positions) do %>
     <%= if Hayago.State.legal?(@state, index) do %>
