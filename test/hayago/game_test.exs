@@ -3,9 +3,16 @@ defmodule Hayago.GameTest do
   use ExUnit.Case
   doctest Hayago.Game
 
-  test "state/1 returns the game's current state" do
-    state = %State{current: :white}
-    assert Game.state(%Game{history: [state, %State{}]}) == state
+  describe "state/1" do
+    test "returns the game's current state" do
+      state = %State{current: :white}
+      assert Game.state(%Game{history: [state, %State{}]}) == state
+    end
+
+    test "returns a game's previous state" do
+      state = %State{current: :white}
+      assert Game.state(%Game{history: [%State{}, state], index: 1}) == state
+    end
   end
 
   test "place/1 adds a state to the history to place a stone on the board" do
