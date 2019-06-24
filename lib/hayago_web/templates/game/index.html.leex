@@ -20,3 +20,8 @@
     <% end %>
   <% end %>
 </div>
+
+<div class="history">
+  <button phx-click="jump" phx-value="<%= @game.index + 1%>">Undo</button>
+  <button phx-click="jump" phx-value="<%= @game.index - 1%>">Redo</button>
+</div>

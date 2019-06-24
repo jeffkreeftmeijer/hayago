@@ -41,4 +41,10 @@ defmodule HayagoWeb.GameLiveTest do
     assert result =~ ~r(<span class="black">)s
     assert result =~ ~r(<span class="white">)s
   end
+
+  test "jumps through history", %{view: view} do
+    render_click(view, :place, "0")
+
+    refute render_click(view, :jump, "1") =~ ~r(<span class="black">)s
+  end
 end
