@@ -60,9 +60,31 @@ defmodule Hayago.Game do
         %Hayago.State{positions: [nil, nil, nil, nil], current: :black}
       ]}
 
+  If the Game's `:index` attribute is higher than 0, the history is sliced
+  before prepending the new state, to allow the game to branch off its history
+  when it's reverted.
+
+      iex> Game.place(%Game{
+      ...>     history: [
+      ...>       %Hayago.State{positions: [:black, nil, nil, nil], current: :white},
+      ...>       %Hayago.State{positions: [nil, nil, nil, nil], current: :black}
+      ...>     ],
+      ...>     index: 1
+      ...>   },
+      ...>   1
+      ...> )
+      %Game{history: [
+        %Hayago.State{positions: [nil, :black, nil, nil], current: :white},
+        %Hayago.State{positions: [nil, nil, nil, nil], current: :black}
+      ]}
   """
-  def place(%Game{history: [state | _] = history} = game, position) do
-    %{game | history: [State.place(state, position) | history]}
+  def place(%Game{history: history, index: index} = game, position) do
+    new_state =
+      game
+      |> Game.state()
+      |> State.place(position)
+
+    %{game | history: [new_state | Enum.slice(history, index..-1)], index: 0}
   end
 
   @doc """
