@@ -31,4 +31,19 @@ defmodule Hayago.GameTest do
   test "jump/1 updates the game's index attribute" do
     assert %Game{index: 1} = Game.jump(%Game{history: [%State{}, %State{}]}, 1)
   end
+
+  describe "history?/2" do
+    test "returns true for an existing index" do
+      assert Game.history?(%Game{}, 0)
+      assert Game.history?(%Game{history: [%State{}, %State{}]}, 1)
+    end
+
+    test "returns false for a negative index" do
+      refute Game.history?(%Game{}, -1)
+    end
+
+    test "returns false for an index that exceeds the history list indexes" do
+      refute Game.history?(%Game{}, -1)
+    end
+  end
 end

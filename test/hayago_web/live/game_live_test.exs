@@ -47,4 +47,17 @@ defmodule HayagoWeb.GameLiveTest do
 
     refute render_click(view, :jump, "1") =~ ~r(<span class="black">)s
   end
+
+  test "disables history buttons when not applicable", %{view: view, html: html} do
+    assert html =~ ~r(<button disabled="disabled">Undo</button>)
+    assert html =~ ~r(<button disabled="disabled">Redo</button>)
+
+    placed = render_click(view, :place, "0")
+    refute placed =~ ~r(<button disabled="disabled">Undo</button>)
+    assert placed =~ ~r(<button disabled="disabled">Redo</button>)
+
+    undone = render_click(view, :jump, "1")
+    assert undone =~ ~r(<button disabled="disabled">Undo</button>)
+    refute undone =~ ~r(<button disabled="disabled">Redo</button>)
+  end
 end

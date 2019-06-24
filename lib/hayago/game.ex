@@ -96,4 +96,22 @@ defmodule Hayago.Game do
   def jump(game, destination) do
     %{game | index: destination}
   end
+
+  @doc """
+  Determines if a history index is valid for the current game.
+
+      iex> Game.history?(%Game{}, 0)
+      true
+
+      iex> Game.history?(%Game{}, 1)
+      false
+
+      iex> Game.history?(%Game{}, -1)
+      false
+  """
+  def history?(%Game{history: history}, index) when index >= 0 and length(history) > index do
+    true
+  end
+
+  def history?(_game, _index), do: false
 end
