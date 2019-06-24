@@ -27,4 +27,8 @@ defmodule Hayago.GameTest do
                ]
              }
   end
+
+  test "jump/1 updates the game's index attribute" do
+    assert %Game{index: 1} = Game.jump(%Game{history: [%State{}, %State{}]}, 1)
+  end
 end

@@ -64,4 +64,14 @@ defmodule Hayago.Game do
   def place(%Game{history: [state | _] = history} = game, position) do
     %{game | history: [State.place(state, position) | history]}
   end
+
+  @doc """
+  Jumps in history by updating the `:index` attribute.
+
+      iex> Game.jump(%Game{index: 0}, 1)
+      %Game{index: 1}
+  """
+  def jump(game, destination) do
+    %{game | index: destination}
+  end
 end
