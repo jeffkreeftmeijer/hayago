@@ -28,6 +28,43 @@ defmodule Hayago.GameTest do
              }
   end
 
+  describe "legal?/2" do
+    test "is legal when placing a stone on an empty board" do
+      assert Game.legal?(%Game{}, 0)
+    end
+
+    test "is illegal when placing a stone on a point that's occupied" do
+      refute Game.legal?(%Game{history: [%State{positions: [:white, nil, nil, nil]}]}, 0)
+    end
+
+    test "is illegal when the move would revert the game to a previous state (ko)" do
+      refute Game.legal?(
+               %Game{
+                 history: [
+                   %State{positions: [nil, nil, nil, nil], current: :white},
+                   %State{positions: [:white, nil, nil, nil], current: :black}
+                 ]
+               },
+               0
+             )
+    end
+
+    test "does not take reverted history into account when enforcing the ko rule" do
+      assert(
+        Game.legal?(
+          %Game{
+            history: [
+              %State{positions: [:white, nil, nil, nil], current: :black},
+              %State{positions: [nil, nil, nil, nil], current: :white}
+            ],
+            index: 1
+          },
+          0
+        )
+      )
+    end
+  end
+
   test "jump/1 updates the game's index attribute" do
     assert %Game{index: 1} = Game.jump(%Game{history: [%State{}, %State{}]}, 1)
   end

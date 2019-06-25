@@ -88,6 +88,67 @@ defmodule Hayago.Game do
   end
 
   @doc """
+  Validates a potential move by checking it against the current and previous
+  states.
+
+      iex> Game.legal?(%Game{}, 0)
+      true
+
+  The move is checked against the current state using `Hayago.State.legal?/2`
+  first, which returns true if the current player can place a stone their
+  without it being immediately captured.
+
+      iex> Game.legal?(
+      ...>   %Game{history: [%State{positions: [nil, :white, :white, nil], current: :black}]},
+      ...>   0
+      ...> )
+      false
+
+  If the stone could be placed on the passed position, the result of that move
+  is checked against all states in the board's history, to prevent repeated
+  board states (the ko rule).
+
+      iex> Game.legal?(
+      ...>   %Game{
+      ...>     history: [
+      ...>       %State{
+      ...>         positions: ~w(
+      ...>           nil   black white nil
+      ...>           black white nil   white
+      ...>           nil   black white nil
+      ...>           nil   nil   nil   nil
+      ...>         )a,
+      ...>         current: :black
+      ...>       },
+      ...>       %State{
+      ...>         positions: ~w(
+      ...>           nil   black white nil
+      ...>           black nil   black white
+      ...>           nil   black white nil
+      ...>           nil   nil   nil   nil
+      ...>         )a,
+      ...>         current: :white
+      ...>       }
+      ...>     ]
+      ...>   },
+      ...>   6
+      ...> )
+      false
+  """
+  def legal?(game, position) do
+    State.legal?(Game.state(game), position) and not repeated_state?(game, position)
+  end
+
+  defp repeated_state?(game, position) do
+    %Game{history: [%State{positions: tentative_positions} | history]} =
+      Game.place(game, position)
+
+    Enum.any?(history, fn %State{positions: positions} ->
+      positions == tentative_positions
+    end)
+  end
+
+  @doc """
   Jumps in history by updating the `:index` attribute.
 
       iex> Game.jump(%Game{index: 0}, 1)
