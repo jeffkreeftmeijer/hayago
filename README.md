@@ -1,19 +1,9 @@
 # Hayago
 
-To start your Phoenix server:
+The Go game, implemented with Phoenix LiveView.
 
-  * Install dependencies with `mix deps.get`
-  * Install Node.js dependencies with `cd assets && npm install`
-  * Start Phoenix endpoint with `mix phx.server`
+> Hayago (早碁) means "quick go" or "fast go". In the context of Go, it means "quick play".
 
-Now you can visit [`localhost:4000`](http://localhost:4000) from your browser.
+## Usage
 
-Ready to run in production? Please [check our deployment guides](https://hexdocs.pm/phoenix/deployment.html).
-
-## Learn more
-
-  * Official website: http://www.phoenixframework.org/
-  * Guides: https://hexdocs.pm/phoenix/overview.html
-  * Docs: https://hexdocs.pm/phoenix
-  * Mailing list: http://groups.google.com/group/phoenix-talk
-  * Source: https://github.com/phoenixframework/phoenix
+Check out the [starter](https://github.com/jeffkreeftmeijer/hayago/tree/started) branch to follow along with the [first](https://blog.appsignal.com/2019/06/18/elixir-alchemy-building-go-with-phoenix-live-view.html) and [second](https://blog.appsignal.com/2019/07/04/elixir-alchemy-building-go-in-elixir-time-travel-and-the-ko-rule.html) article. The [master](https://github.com/jeffkreeftmeijer/hayago/tree/master) branch holds the completed and [deployed](https://hayago.herokuapp.com) version of the project.
