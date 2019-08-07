@@ -21,6 +21,31 @@ defmodule Hayago.Game do
   """
   alias Hayago.{Game, State}
   defstruct history: [%State{}], index: 0
+  use GenServer
+
+  def start_link(options) do
+    GenServer.start_link(__MODULE__, %Game{}, options)
+  end
+
+  @impl true
+  def init(game) do
+    {:ok, game}
+  end
+
+  @impl true
+  def handle_call(:game, _from, game) do
+    {:reply, game, game}
+  end
+
+  @impl true
+  def handle_cast({:place, position}, game) do
+    {:noreply, Game.place(game, position)}
+  end
+
+  @impl true
+  def handle_cast({:jump, destination}, game) do
+    {:noreply, Game.jump(game, destination)}
+  end
 
   @doc """
   Returns the element in the history list that corresponds to the `:index`
