@@ -21,7 +21,9 @@ defmodule Hayago.Game do
   """
   alias Hayago.{Game, State}
   defstruct history: [%State{}], index: 0
-  use GenServer
+  use GenServer, restart: :transient
+
+  @timeout 600_000
 
   def start_link(options) do
     GenServer.start_link(__MODULE__, %Game{}, options)
@@ -29,22 +31,27 @@ defmodule Hayago.Game do
 
   @impl true
   def init(game) do
-    {:ok, game}
+    {:ok, game, @timeout}
   end
 
   @impl true
   def handle_call(:game, _from, game) do
-    {:reply, game, game}
+    {:reply, game, game, @timeout}
   end
 
   @impl true
   def handle_cast({:place, position}, game) do
-    {:noreply, Game.place(game, position)}
+    {:noreply, Game.place(game, position), @timeout}
   end
 
   @impl true
   def handle_cast({:jump, destination}, game) do
-    {:noreply, Game.jump(game, destination)}
+    {:noreply, Game.jump(game, destination), @timeout}
+  end
+
+  @impl true
+  def handle_info(:timeout, game) do
+    {:stop, :normal, game}
   end
 
   @doc """
