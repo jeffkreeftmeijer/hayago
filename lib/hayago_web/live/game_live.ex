@@ -6,7 +6,11 @@ defmodule HayagoWeb.GameLive do
     HayagoWeb.GameView.render("index.html", assigns)
   end
 
-  def mount(_session, socket) do
+  def handle_params(%{"name" => name} = _params, _uri, socket) do
+    {:noreply, assign_game(socket, name)}
+  end
+
+  def handle_params(_params, _uri, socket) do
     name =
       ?a..?z
       |> Enum.take_random(6)
@@ -15,7 +19,11 @@ defmodule HayagoWeb.GameLive do
     {:ok, _pid} =
       DynamicSupervisor.start_child(Hayago.GameSupervisor, {Game, name: via_tuple(name)})
 
-    {:ok, assign_game(socket, name)}
+    {:ok,
+     live_redirect(
+       socket,
+       to: HayagoWeb.Router.Helpers.live_path(socket, HayagoWeb.GameLive, name: name)
+     )}
   end
 
   def handle_event("place", index, %{assigns: %{name: name}} = socket) do
