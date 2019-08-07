@@ -7,6 +7,7 @@ defmodule HayagoWeb.GameLive do
   end
 
   def handle_params(%{"name" => name} = _params, _uri, socket) do
+    :ok = Phoenix.PubSub.subscribe(Hayago.PubSub, name)
     {:noreply, assign_game(socket, name)}
   end
 
@@ -28,11 +29,17 @@ defmodule HayagoWeb.GameLive do
 
   def handle_event("place", index, %{assigns: %{name: name}} = socket) do
     :ok = GenServer.cast(via_tuple(name), {:place, String.to_integer(index)})
-    {:noreply, assign_game(socket)}
+    :ok = Phoenix.PubSub.broadcast(Hayago.PubSub, name, :update)
+    {:noreply, socket}
   end
 
   def handle_event("jump", destination, %{assigns: %{name: name}} = socket) do
     :ok = GenServer.cast(via_tuple(name), {:jump, String.to_integer(destination)})
+    :ok = Phoenix.PubSub.broadcast(Hayago.PubSub, name, :update)
+    {:noreply, socket}
+  end
+
+  def handle_info(:update, socket) do
     {:noreply, assign_game(socket)}
   end
 
